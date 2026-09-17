@@ -8,14 +8,6 @@ from typing import Sequence
 from app.models.event import Event
 
 
-def _normalize_dt(dt: datetime | None) -> datetime:
-    if dt is None:
-        return datetime.min
-    if getattr(dt, 'tzinfo', None) is not None:
-        return dt.replace(tzinfo=None)
-    return dt
-
-
 class FlowAnalyzer:
     """Detect sustained IDE-focused development sessions."""
 
@@ -52,7 +44,7 @@ class FlowAnalyzer:
 
         ordered_events = sorted(
             events,
-            key=lambda event: (_normalize_dt(event.timestamp), event.id or 0),
+            key=lambda event: (event.timestamp, event.id or 0),
         )
 
         sessions: list[dict] = []
@@ -99,12 +91,9 @@ class FlowAnalyzer:
         start_time = events[0].timestamp
         end_time = events[-1].timestamp
 
-        s_time = start_time.replace(tzinfo=None) if start_time and getattr(start_time, 'tzinfo', None) else start_time
-        e_time = end_time.replace(tzinfo=None) if end_time and getattr(end_time, 'tzinfo', None) else end_time
-
         duration_seconds = max(
             0,
-            int((e_time - s_time).total_seconds()),
+            int((end_time - start_time).total_seconds()),
         )
 
         sessions.append(
@@ -125,6 +114,4 @@ class FlowAnalyzer:
         start: datetime,
         end: datetime,
     ) -> float:
-        s = start.replace(tzinfo=None) if start and getattr(start, 'tzinfo', None) else start
-        e = end.replace(tzinfo=None) if end and getattr(end, 'tzinfo', None) else end
-        return max(0.0, (e - s).total_seconds())
+        return max(0.0, (end - start).total_seconds())

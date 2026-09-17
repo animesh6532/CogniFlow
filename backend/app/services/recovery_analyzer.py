@@ -7,14 +7,6 @@ from typing import Sequence
 from app.models.event import Event
 
 
-def _normalize_dt(dt: datetime | None) -> datetime:
-    if dt is None:
-        return datetime.min
-    if getattr(dt, 'tzinfo', None) is not None:
-        return dt.replace(tzinfo=None)
-    return dt
-
-
 class RecoveryAnalyzer:
     """Measure return to focused IDE activity after workflow changes."""
 
@@ -38,7 +30,7 @@ class RecoveryAnalyzer:
         ordered_events = sorted(
             events,
             key=lambda event: (
-                _normalize_dt(event.timestamp),
+                event.timestamp,
                 event.id or 0,
             ),
         )
@@ -73,15 +65,12 @@ class RecoveryAnalyzer:
             if recovery_event is None:
                 continue
 
-            evt_time = recovery_event.timestamp.replace(tzinfo=None) if recovery_event.timestamp and getattr(recovery_event.timestamp, 'tzinfo', None) else recovery_event.timestamp
-            trig_time = trigger_timestamp.replace(tzinfo=None) if trigger_timestamp and getattr(trigger_timestamp, 'tzinfo', None) else trigger_timestamp
-
             seconds = int(
                 max(
                     0,
                     (
-                        evt_time
-                        - trig_time
+                        recovery_event.timestamp
+                        - trigger_timestamp
                     ).total_seconds(),
                 )
             )
@@ -141,12 +130,7 @@ class RecoveryAnalyzer:
         # Remove duplicate timestamps and sort
         # ----------------------------------------------------------
 
-        normalized = [
-            t.replace(tzinfo=None) if t and getattr(t, 'tzinfo', None) else t
-            for t in timestamps
-        ]
-
-        return sorted(set(normalized))
+        return sorted(set(timestamps))
 
     def _find_next_focused_event_after(
         self,
@@ -156,12 +140,8 @@ class RecoveryAnalyzer:
     ) -> Event | None:
         """Return the first focused IDE event after a trigger."""
 
-        trig_time = timestamp.replace(tzinfo=None) if timestamp and getattr(timestamp, 'tzinfo', None) else timestamp
-
         for event in events:
-            evt_time = event.timestamp.replace(tzinfo=None) if event.timestamp and getattr(event.timestamp, 'tzinfo', None) else event.timestamp
-
-            if evt_time <= trig_time:
+            if event.timestamp <= timestamp:
                 continue
 
             if self._is_focused(event):
@@ -174,6 +154,14 @@ class RecoveryAnalyzer:
         event: Event,
     ) -> bool:
         """Return whether an event represents focused IDE activity."""
+
+        source = (event.source or "").upper()
+        context = (event.context or "").upper()
+
+        return (
+            source == self.FOCUSED_CONTEXT
+            or context == self.FOCUSED_CONTEXT
+        )""Return whether an event represents focused IDE activity."""
 
         source = (event.source or "").upper()
         context = (event.context or "").upper()

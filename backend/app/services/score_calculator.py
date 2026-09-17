@@ -7,14 +7,6 @@ from typing import Sequence
 from app.models.event import Event
 
 
-def _normalize_dt(dt: datetime | None) -> datetime:
-    if dt is None:
-        return datetime.min
-    if getattr(dt, 'tzinfo', None) is not None:
-        return dt.replace(tzinfo=None)
-    return dt
-
-
 class FlowScoreCalculator:
     """Calculate a normalized developer flow score.
 
@@ -144,21 +136,15 @@ class FlowScoreCalculator:
 
         ordered = sorted(
             events,
-            key=lambda event: (
-                event.timestamp.replace(tzinfo=None) if event.timestamp and getattr(event.timestamp, 'tzinfo', None) else event.timestamp,
-                event.id or 0,
-            ),
+            key=lambda event: (event.timestamp, event.id or 0),
         )
-
-        t_last = ordered[-1].timestamp.replace(tzinfo=None) if ordered[-1].timestamp and getattr(ordered[-1].timestamp, 'tzinfo', None) else ordered[-1].timestamp
-        t_first = ordered[0].timestamp.replace(tzinfo=None) if ordered[0].timestamp and getattr(ordered[0].timestamp, 'tzinfo', None) else ordered[0].timestamp
 
         return max(
             0,
             int(
                 (
-                    t_last
-                    - t_first
+                    ordered[-1].timestamp
+                    - ordered[0].timestamp
                 ).total_seconds()
             ),
         )

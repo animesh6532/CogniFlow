@@ -7,14 +7,6 @@ from typing import Sequence
 from app.models.event import Event
 
 
-def _normalize_dt(dt: datetime | None) -> datetime:
-    if dt is None:
-        return datetime.min
-    if getattr(dt, 'tzinfo', None) is not None:
-        return dt.replace(tzinfo=None)
-    return dt
-
-
 class ContextSwitchAnalyzer:
     """Detect transitions between developer activity contexts."""
 
@@ -30,7 +22,7 @@ class ContextSwitchAnalyzer:
 
         ordered_events = sorted(
             events,
-            key=lambda event: (_normalize_dt(event.timestamp), event.id or 0),
+            key=lambda event: (event.timestamp, event.id or 0),
         )
 
         switches: list[dict] = []
@@ -60,15 +52,12 @@ class ContextSwitchAnalyzer:
                 previous_event = event
                 continue
 
-            e_time = event.timestamp.replace(tzinfo=None) if event.timestamp and getattr(event.timestamp, 'tzinfo', None) else event.timestamp
-            p_time = previous_event.timestamp.replace(tzinfo=None) if previous_event.timestamp and getattr(previous_event.timestamp, 'tzinfo', None) else previous_event.timestamp
-
             duration_seconds = int(
                 max(
                     0,
                     (
-                        e_time
-                        - p_time
+                        event.timestamp
+                        - previous_event.timestamp
                     ).total_seconds(),
                 )
             )
