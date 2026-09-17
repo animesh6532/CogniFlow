@@ -50,15 +50,7 @@ export const api = {
       const response = await client.get('/health');
       return response.data;
     } catch (error) {
-<<<<<<< HEAD
       return { status: 'offline', database: 'unavailable', dialect: 'none' };
-=======
-<<<<<<< main
-      return { status: 'offline', database: 'unavailable', dialect: 'none' };
-=======
-      handleApiError(error, 'Failed to check CogniFlow backend health.');
->>>>>>> main
->>>>>>> 13ad87a779c8aae3dccb3b5f81132b221198f8b0
     }
   },
 
