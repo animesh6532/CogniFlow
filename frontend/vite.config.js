@@ -38,6 +38,20 @@ export default defineConfig({
         target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, res) => {
+            if (res && !res.headersSent) {
+              res.writeHead(503, { 'Content-Type': 'application/json' });
+              res.end(
+                JSON.stringify({
+                  status: 'offline',
+                  database: 'unavailable',
+                  detail: 'CogniFlow backend server is not running on http://127.0.0.1:8000.',
+                })
+              );
+            }
+          });
+        },
       },
     },
   },

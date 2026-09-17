@@ -115,8 +115,9 @@ export const api = {
   },
 
   // 9. Get Activity Events
-  async getEvents({ developerId, source, startTime, endTime } = {}) {
+  async getEvents(options = {}) {
     try {
+      const { developerId, source, startTime, endTime } = options || {};
       const params = {};
       if (developerId) params.developer_id = developerId;
       if (source) params.source = source;

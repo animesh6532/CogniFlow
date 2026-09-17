@@ -223,8 +223,8 @@ def run_simulation(
         raise HTTPException(
             status_code=500,
             detail=(
-                "Failed to generate, persist, or process "
-                "the CogniFlow simulation."
+                f"Failed to generate, persist, or process "
+                f"the CogniFlow simulation: {exc}"
             ),
         ) from exc
 

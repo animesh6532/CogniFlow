@@ -8,6 +8,14 @@ from typing import Sequence
 from app.models.event import Event
 
 
+def _normalize_dt(dt: datetime | None) -> datetime:
+    if dt is None:
+        return datetime.min
+    if getattr(dt, 'tzinfo', None) is not None:
+        return dt.replace(tzinfo=None)
+    return dt
+
+
 class InterruptionAnalyzer:
     """Identify simulated activities that disrupt focused IDE work."""
 
@@ -25,7 +33,7 @@ class InterruptionAnalyzer:
 
         ordered_events = sorted(
             events,
-            key=lambda event: (event.timestamp, event.id or 0),
+            key=lambda event: (_normalize_dt(event.timestamp), event.id or 0),
         )
 
         interruptions: list[dict] = []
@@ -114,10 +122,13 @@ class InterruptionAnalyzer:
         current = events[index]
         next_event = events[index + 1]
 
+        c_time = current.timestamp.replace(tzinfo=None) if current.timestamp and getattr(current.timestamp, 'tzinfo', None) else current.timestamp
+        n_time = next_event.timestamp.replace(tzinfo=None) if next_event.timestamp and getattr(next_event.timestamp, 'tzinfo', None) else next_event.timestamp
+
         seconds = int(
             max(
                 0,
-                (next_event.timestamp - current.timestamp).total_seconds(),
+                (n_time - c_time).total_seconds(),
             )
         )
 

@@ -20,10 +20,12 @@ const getSourceBadgeClass = (source) => {
 };
 
 export const EventCard = ({ event }) => {
+  if (!event) return null;
   const [expanded, setExpanded] = useState(false);
 
-  const formattedTime = event.timestamp
-    ? new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  const rawTime = event.timestamp || event.startTime || event.start_time;
+  const formattedTime = rawTime
+    ? new Date(rawTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     : '—';
 
   return (
