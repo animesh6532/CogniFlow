@@ -161,12 +161,4 @@ class RecoveryAnalyzer:
         return (
             source == self.FOCUSED_CONTEXT
             or context == self.FOCUSED_CONTEXT
-        )""Return whether an event represents focused IDE activity."""
-
-        source = (event.source or "").upper()
-        context = (event.context or "").upper()
-
-        return (
-            source == self.FOCUSED_CONTEXT
-            or context == self.FOCUSED_CONTEXT
         )
