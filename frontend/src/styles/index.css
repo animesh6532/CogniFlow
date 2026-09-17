@@ -1,0 +1,208 @@
+/* ==============================================================
+   COGNIFLOW — PREMIUM LIGHT SKY-BLUE DESIGN SYSTEM
+   Airy White Surfaces, Soft Sky-Blue Gradients & Cyan Accents
+   ============================================================== */
+
+:root {
+  /* Core Color System (Light First) */
+  --bg-light: #f7fbff;
+  --bg-subtle: #eff8ff;
+  --surface-white: #ffffff;
+  --surface-elevated: #f8fafc;
+  
+  /* Glass Surfaces & Elevation */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-bg-hover: rgba(255, 255, 255, 0.92);
+  --glass-bg-active: #ffffff;
+  --glass-border: rgba(14, 165, 233, 0.15);
+  --glass-border-hover: rgba(14, 165, 233, 0.3);
+  --glass-border-subtle: rgba(226, 232, 240, 0.8);
+  --glass-border-accent: rgba(14, 165, 233, 0.4);
+
+  /* Primary & Accent Gradients */
+  --primary-blue: #0ea5e9;
+  --primary-blue-hover: #0284c7;
+  --primary-sky: #38bdf8;
+  --primary-cyan: #06b6d4;
+  --accent-cyan: #67e8f9;
+  --deep-blue: #0369a1;
+  
+  --primary-gradient: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #06b6d4 100%);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  --glow-gradient: radial-gradient(circle at center, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+
+  /* Status Colors */
+  --success-color: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --success-border: rgba(16, 185, 129, 0.25);
+  
+  --warning-color: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --warning-border: rgba(245, 158, 11, 0.25);
+  
+  --danger-color: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+  --danger-border: rgba(239, 68, 68, 0.25);
+  
+  --info-color: #0ea5e9;
+  --info-bg: rgba(14, 165, 233, 0.1);
+  --info-border: rgba(14, 165, 233, 0.25);
+
+  /* Typography Colors */
+  --text-main: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  
+  /* Shadow & Glow Effects */
+  --shadow-sm: 0 2px 8px rgba(14, 165, 233, 0.06);
+  --shadow-md: 0 10px 30px -4px rgba(14, 165, 233, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 20px 45px -6px rgba(14, 165, 233, 0.18), 0 8px 20px -4px rgba(0, 0, 0, 0.04);
+  --glow-sky: 0 0 25px rgba(56, 189, 248, 0.3);
+  --glow-cyan: 0 0 25px rgba(6, 182, 212, 0.25);
+
+  /* Layout & Spacing */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
+  
+  --navbar-height: 76px;
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background-color: var(--bg-light);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-blue-hover);
+}
+
+/* Gradient Text Helper */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Layout Structure */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: var(--navbar-height);
+}
+
+.content-area {
+  flex: 1;
+  padding: 2.25rem 2rem 4rem;
+  max-width: 1520px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(239, 248, 255, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(14, 165, 233, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(14, 165, 233, 0.5);
+}
+
+/* Grid Layouts */
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+@media (max-width: 1200px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .content-area { padding: 1.25rem 1rem 3rem; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
